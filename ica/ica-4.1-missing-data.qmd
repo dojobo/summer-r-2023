@@ -4,6 +4,7 @@ format:
   html:
     self-contained: true
     embed-resources: true
+  gfm: default
 editor: visual
 ---
 
@@ -45,7 +46,6 @@ sum(c(29, NA, 38, 25, 34))
 
 ```
 
-
 ## Task 2 - `NA` in data frames
 
 (1) Filter `polyps` to only keep rows that have a value for `number12m`. Does the number of rows match your expected count, based on your queries above?
@@ -67,5 +67,3 @@ sum(c(29, NA, 38, 25, 34))
 ```{r}
 
 ```
-
-

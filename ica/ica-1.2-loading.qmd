@@ -1,6 +1,8 @@
 ---
 title: "ICA 1.2 Loading and addressing data"
-format: html
+format: 
+  html: default
+  gfm: default
 editor: visual
 ---
 
