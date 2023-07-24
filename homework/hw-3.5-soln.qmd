@@ -1,0 +1,151 @@
+---
+title: "Homework 3.5"
+format: 
+  html: 
+    self-contained: true
+    embed-resources: true
+editor: visual
+---
+
+Attach the `tidyverse` and `medicaldata` packages here:
+
+```{r}
+library(tidyverse)
+library(medicaldata)
+```
+
+::: {.callout-note icon="false"}
+#### Task 1 - Reproduce plots from images
+
+Refer to the accompanying Word file, which contains four plots. Write the code for each plot below.
+
+Plot #1: (note the design error in Randomization being treated as continuous---we will fix this in future)
+
+```{r}
+# your code here 
+```
+
+Plot #2:
+
+```{r}
+
+```
+
+Plot #3:
+
+```{r}
+
+```
+
+Plot #4: (this one is trickier. You'll need to filter, group, and summarize; and use the `position` and `stat` arguments of `geom_bar()`. )
+
+```{r}
+
+```
+:::
+
+::: {.callout-tip collapse="true"}
+#### Solution - Reproduce plots from images
+
+```{r}
+#| output: false
+#| warning: false
+#| label: answer-reproduce
+# 1
+laryngoscope %>% 
+  ggplot() +
+  geom_point(aes(x=age, y=ease, color=Randomization)) +
+  labs(x="Age", y="Ease")
+# 2
+polyps %>% 
+  ggplot() +
+  geom_density(aes(x=number12m, color=treatment)) +
+  labs(x="12-month polyp count",
+       y="Density",
+       title="Male subjects had lower 12-month polyp counts.")
+# 3
+polyps %>% 
+  ggplot() +
+  geom_boxplot(aes(x=number12m, y=treatment, fill=sex)) +
+  labs(y="Treatment group",
+       x="12-month polyp count",
+       fill="Sex")
+# 4
+polyps %>% 
+  group_by(treatment, sex) %>% 
+  summarize(median_baseline = median(baseline)) %>% 
+  ggplot() +
+  geom_bar(aes(y=treatment, x=median_baseline, fill=sex), stat="identity", position="dodge")
+```
+:::
+
+::: {.callout-note icon="false"}
+#### Task 2 - Fix this code
+
+Fix the code chunks below, which contain some common mistakes when it comes to plotting. It can help to run the code first and read the error message closely. You can also read the code for examples of themes and color scales included with ggplot2.
+
+Chunk #1:
+
+```{r}
+#| eval: false
+covid_testing %>% 
+  filter(result=="positive") %>% 
+  ggplot() +
+  geom_violin(x=demo_group, y=ct_result) +
+  theme_classic()
+  
+```
+
+Chunk #2: (note: intention is for color-coded bars)
+
+```{r}
+#| eval: false
+covid_testing %>%
+  drop_na(payor_group, ct_result) %>% 
+  group_by(demo_group) %>% 
+  summarize(n=n(), mean_verification_time=mean(rec_ver_tat)) %>% 
+  ggplot() +
+  geom_bar(aes(y=demo_group, x=rec_ver_tat, fill=n), stat="identity") +
+  scale_fill_viridis_c() +
+  theme_minimal()
+```
+
+Chunk #3: (error message is less helpful here. What's missing?)
+
+```{r}
+#| eval: false
+covid_testing %>% 
+  geom_bin2d(aes(x=pan_day, y=age)) +
+  labs(x="Day of pandemic") +
+  theme_light()
+```
+:::
+
+::: {.callout-tip collapse="true"}
+#### Solution 2 - Fix this code
+
+```{r}
+#| output: false
+#| label: answer-fix-code
+# 1
+covid_testing %>% 
+  filter(result=="positive") %>% 
+  ggplot() +
+  geom_violin(aes(x=demo_group, y=ct_result)) +
+  theme_classic()
+# 2
+covid_testing %>%
+  drop_na(payor_group, ct_result) %>% 
+  group_by(demo_group) %>% 
+  summarize(n=n(), mean_verification_time=mean(rec_ver_tat)) %>% 
+  ggplot() +
+  geom_bar(aes(y=demo_group, x=mean_verification_time, fill=n), stat="identity") +
+  scale_fill_viridis_c() +
+  theme_minimal()
+# 3
+covid_testing %>% 
+  geom_bin2d(aes(x=pan_day, y=age)) +
+  labs(x="Day of pandemic") +
+  theme_light()
+```
+:::

@@ -1,0 +1,37 @@
+---
+title: "ICA 5.3 inference and modeling"
+format: 
+  html:
+    self-contained: true
+    embed-resources: true
+editor: visual
+---
+
+Attach the tidyverse and medicaldata packages here:
+
+```{r}
+#| output: false
+#| echo: true
+library(tidyverse)
+library(medicaldata)
+```
+
+Task 1 - Graph a Q-Q plot
+
+Graph a Q-Q plot of `licorice_gargle$preOp_calcBMI` to check its Normality.
+
+```{r}
+
+```
+
+Task 2 - Run a two-sample Student's $t$-test of mean `attempt1_time` between `Randomization` groups in `laryngoscope`.
+
+```{r}
+
+```
+
+Task 3 - Fit and plot a linear model of `attempt1_time` over `age` in `laryngoscope`.
+
+```{r}
+
+```

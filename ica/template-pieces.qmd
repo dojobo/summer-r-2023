@@ -1,0 +1,33 @@
+---
+title: "template-pieces.qmd"
+format: html
+editor: source
+---
+
+Note: remove TODO\_ from the headers and chunk label after finishing content.
+
+## Task and answer
+
+::: {.callout-note icon="false"}
+#### TODO_Task - Task_name_here
+
+1.  Step 1
+2.  Step 2
+
+```{r}
+# 🏡
+# your code here 
+```
+:::
+
+::: {.callout-tip collapse="true"}
+#### TODO_Answer - Task_name_here
+
+```{r}
+#| output: false
+#| label: TODO_answer-task_name_here
+
+```
+
+Answer commentary.
+:::

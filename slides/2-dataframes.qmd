@@ -1,0 +1,357 @@
+---
+title: "Summer R"
+subtitle: "Session 2: Data frames"
+author: "Dominic Bordelon, Research Data Librarian, ULS"
+format: 
+  revealjs:
+    self-contained: true
+    footer: "Summer R 2: Data frames"
+    logo: "images/ULS_logo1.png"
+editor: visual
+---
+
+```{r}
+#| output: false
+#| echo: false
+library(tidyverse)
+```
+
+## Agenda {.smaller}
+
+1.  Introductions and review
+2.  [R Projects]
+3.  [The pipe operator]
+4.  [Selecting and ordering df variables]
+5.  [Sorting rows in a data frame]
+6.  [Filtering (subsetting) rows](#filtering-subsetting-rows)
+7.  [Summarizing and grouping a data frame]
+8.  [Base R plotting]
+
+## The dplyr package
+
+::: columns
+::: {.column width="50%"}
+"dplyr is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges."
+:::
+
+::: {.column width="50%"}
+![](images/dplyr-logo.png){fig-align="center"}
+:::
+:::
+
+## Introductions
+
+## ICA and Homework review
+
+# R Projects (.RProj files)
+
+## R Projects
+
+-   A file (**`.RProj`**) which lives in the root of a project directory
+-   RStudio uses this file to:
+    -   set working directory
+    -   remember command history (console + History pane)
+    -   remember project-specific option settings (Tools menu)
+-   It's recommended to create an RProject for each of your projects that use RStudio, to help keep your work organized.
+-   File \> New Project...
+
+# The pipe operator
+
+## Pipe operator, `%>%` {.smaller}
+
+-   A tidyverse feature (magrittr package)
+-   Written as: **`%>%`** (percent greater-than percent)
+-   `exprA %>% exprB` evaluates expression A, and then sends its output to expression B as input
+
+```{r}
+#| echo: true
+#| eval: false
+my_values <- c(1.33, 1.66, 2.33)
+
+mean(my_values) %>% round(1)
+
+# is the same as:
+
+round(mean(my_values), 1)
+```
+
+Note that the first argument of `round()` has disappeared in the piped version, because it is filled by the mean just calculated. `1` is the `digits` argument, i.e., one decimal place.
+
+## Pipelines
+
+We can string together as many piped expressions as we want. For example, this code calculates temperature changes from three experimental trials, averages and rounds them, then prints a short statement:
+
+```{r}
+#| echo: true
+t_initial <- c(25.04, 24.88, 25.23)
+t_final <- c(35.82, 35.88, 35.67)
+
+(t_final - t_initial) %>% 
+  mean() %>% 
+  signif(4) %>% 
+  paste("°C avg. ΔT")
+```
+
+## Pipeline object assignment
+
+Like other expressions, a pipeline can have its result assigned to an object.
+
+Revising the same example: the value is calculated and assigned in its own pipe (as `delta_t_avg`), then combined with text afterwards.
+
+```{r}
+#| echo: true
+delta_t_avg <- (t_final - t_initial) %>% 
+  mean() %>% 
+  signif(4)
+
+paste(delta_t_avg, "°C avg. ΔT")
+```
+
+## Benefits of the pipe
+
+1.  Avoid function wrapping (which is hard to read)
+2.  Avoid storing too many intermediate results in the environment (using object assignment)
+3.  The pipeline is easy to read as a procedure
+4.  Pipelines are easy to modify, e.g., to add new intermediate calls, or to cut them short when a problem has appeared.
+
+## Keyboard shortcuts revisited {.smaller}
+
+| Function                     | Windows            | macOS               |
+|------------------------------|--------------------|---------------------|
+| Execute line                 | Ctrl-Enter         | ⌘-Enter             |
+| Assignment operator **`<-`** | Alt - (Alt-hyphen) | ⌥ - (Option-hyphen) |
+| Pipe operator **`%>%`**      | Ctrl-Shift-M       | ⌘-Shift-M           |
+
+# Selecting and ordering df variables
+
+## Step 0: load data
+
+```{r}
+#| echo: true
+polyps <- read_csv("data/polyps.csv")
+names(polyps)
+```
+
+## Selecting variables (columns) with `dplyr::select()` {.smaller}
+
+-   We often only want a small number of the data frame's variables when investigating or visualizing a question
+-   `select(df, ...)` returns `df` with only the columns listed in `...`, one column or column-expression per argument
+
+```{r}
+#| echo: true
+polyps %>% 
+  select(participant_id:baseline, age)
+```
+
+## `select()` notes
+
+-   Indicate ranges with **`:`** (colon)
+    -   `age:baseline` is columns age through baseline (inclusive)
+-   Numeric indices may be used instead of names
+-   Columns in the result will follow whatever order you use with `select()`, i.e., you can rearrange at the same time that you select
+-   A minus sign (**`-`**) prepended to a column name *negates* or *excludes* it ("all columns except x")
+
+## `select()` example
+
+```{r}
+#| echo: true
+
+# select cols participant_id thru treatment except age, and col. no. 7
+
+polyps %>% 
+  select(participant_id:treatment, -age, 7)
+```
+
+# Sorting rows in a data frame
+
+## Sorting df rows with `dplyr::arrange()` {.smaller}
+
+-   Often we want to sort our data frame by values in one or more columns, e.g., alphabetically by name, or (more realistically) by treatment group and by outcome variable
+-   `arrange(df, ...)` returns `df` with the rows reordered according to arguments (which are variable names)
+
+```{r}
+#| echo: true
+polyps %>% 
+  arrange(baseline) %>% print(n=7)
+```
+
+## `arrange()` notes
+
+-   The function `desc()` ("descending") can be wrapped around a variable to reverse it
+-   You can combine sort-variables sequentially, by giving more arguments: `arrange(colA, colB)` will sort by `colA`, and then sort by `colB` after that (as a tie-breaker).
+-   Each argument can be an expression if needed (column name will usually be good enough)
+
+## `arrange()` example
+
+```{r}
+#| echo: true
+polyps %>% 
+  arrange(treatment, sex, desc(age))
+```
+
+# ICA 2.1: Pipes, selecting, and sorting
+
+# Filtering (subsetting) rows {#filtering-subsetting-rows}
+
+## Step 0: logical expressions {.smaller}
+
+-   `logical` is one of R's basic data types, for representing `TRUE` and `FALSE`; expressions which produce a logical value are *logical expressions*
+-   Fundamentally, `TRUE`/`FALSE` are needed for application if-else logic
+-   Numeric comparators **`> >= == != <= <`** all produce logical results
+-   There are also functions which return logical values (we'll see some later)
+-   logical AKA Boolean or conditional
+
+## Logical expression examples
+
+```{r}
+#| echo: true
+t_final
+
+t_final > 32
+t_final > 35.84
+t_final <= 35.82
+
+t_final == 35.67  # equals
+t_final != 35.67  # does not equal
+```
+
+## Filtering rows with `dplyr::filter()` {.smaller}
+
+-   We often need to exclude certain rows from our data, or isolate only certain rows of interest, depending on values in the data: for example, only one gender, or exclude patients whose BMI is outside the range of study, etc.
+-   `filter(df, logical_expr)` returns `df` but only with rows for which `logical_expr` evaluates as `TRUE`
+
+```{r}
+#| echo: true
+
+polyps %>% 
+  filter(age > 24)
+```
+
+## `filter()` notes {.smaller}
+
+-   String comparison uses `==` or functions (e.g., "name contains X")
+-   The expression may contain multiple variables/columns, but it is evaluated only once for each row in the source df
+-   Combining multiple expressions:
+    -   **`&`**, the AND operator $\rightarrow$ true iff both A and B are true
+    -   **`|`**, the OR operator $\rightarrow$ true if A or B is true (or both)
+    -   `xor()` is the exclusive OR $\rightarrow$ true iff A or B is true (but not both)
+-   Any logical expression may be negated/reversed by prepending with **`!`**
+
+## `filter()` example
+
+```{r}
+#| echo: true
+# retain non-placebo patients aged 18 and older:
+
+polyps %>% 
+  filter(treatment != "placebo", age >= 18)
+```
+
+# Summarizing and grouping a data frame
+
+## Base R `summary()` {.smaller}
+
+-   `summary()` is a base R function that prints a summary of an object; the exact format depends on the object and data type
+    -   numeric vector: five-number summary (very convenient!)
+    -   factor, i.e. categorical vector: count of cases in each category
+    -   dataframe: `summary()` of each column
+-   Try out `summary()` on new objects as you come across them, in addition to printing them on the console.
+-   `summary()` is very quick and easy, but its results aren't in a convenient format for further calculation/reporting. Its output is also fixed.
+
+## Summarizing a data frame with `dplyr::summarize()` {.smaller}
+
+-   Often we want to aggregate or simplify multiple rows of information into one row, e.g., mean of a variable for all observations.
+-   `dplyr::summarize()` applies aggregating functions to variables and returns a data frame.
+
+```{r}
+#| echo: true
+polyps %>% 
+  summarize(mean(age), sd(age))
+```
+
+## `summarize()` notes {.smaller}
+
+-   Aggregation functions
+    -   center: `mean()`, `median()`
+    -   spread: `sd()`, `IQR()`
+    -   range: `min()`, `max()`
+    -   position: `first()`, `last()`, `nth()`
+    -   count: `n()`, `n_distinct()`
+    -   logical: `any()`, `all()`
+-   To name the columns in the output data frame, use named arguments.
+-   Usually we will summarize after grouping (next section)
+
+## `summarize()` example
+
+```{r}
+#| echo: true
+
+# summarize the table's number of patients, 
+# avg age, avg baseline, and max baseline:
+
+polyps %>% 
+  summarize(row_count = n(), 
+            avg_age = round(mean(age), 1),
+            avg_baseline = round(mean(baseline), 1),
+            max_baseline = max(baseline))
+```
+
+## Grouping data frame rows with `dplyr::group_by()` {.smaller}
+
+-   We often want to identify and examine subgroups within the data using categorical variables.
+-   `group_by(df, variable)` returns a data frame with each row grouped according to its value for `variable`; this grouped df is then used with other dplyr functions (especially `summarize()`)
+
+```{r}
+#| echo: true
+polyps %>% 
+  group_by(treatment) %>% print(n=7)
+```
+
+## `group_by()` notes
+
+-   More than one grouping is possible (and sequence matters)
+-   If you want to group e.g. by numeric ranges/bins, you'll first create a categorical variable using the numeric variable as a basis (we will do this in session 4 or 5)
+-   Also compatible with other dplyr functions: `filter()`, `arrange()`, etc.
+
+## `group_by()` example
+
+```{r}
+#| echo: true
+# group by treatment and sex,
+# then calculate avg baseline and avg 3-month polyp count
+
+polyps %>% 
+  group_by(treatment, sex) %>% 
+  summarize(avg_baseline = round(mean(baseline), 1),
+            avg_number3m = round(mean(number3m), 1))
+```
+
+# ICA 2.2: Filtering, summarizing, and grouping
+
+# Base R plotting
+
+## Easy base R plots {.smaller}
+
+-   `hist(x)` gives a histogram for numeric vector x
+-   `barplot(x)` produces a bar plot of categorical variable x
+-   `plot(x, y)` produces a scatter plot of vectors x and y
+
+```{r}
+#| echo: true
+hist(polyps$age)
+```
+
+------------------------------------------------------------------------
+
+# Wrap up
+
+## Conclusion
+
+We learned about:
+
+-   Managing our work with RProjects
+-   The pipe operator
+-   Selecting data frame variables, and sorting and filtering data frame rows
+-   Grouping and summarizing data frame rows for analysis by aggregation
+
+Next time: visualizing with ggplot2!

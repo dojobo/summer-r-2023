@@ -1,0 +1,79 @@
+---
+title: "ICA 3.2 multivariate plots"
+format: 
+  html:
+    self-contained: true
+    embed-resources: true
+editor: visual
+---
+
+Attach the tidyverse and medicaldata packages here:
+
+```{r}
+#| output: false
+#| echo: true
+library(tidyverse)
+library(medicaldata)
+```
+
+::: {.callout-note icon="false"}
+#### Task 1 - Scatter plot
+
+(1) Make a scatter plot comparing `polyps` baseline (x) and number3m (y).
+(2) Add a smoother using `geom_smooth()`. Note that this layer will need aesthetics. You can store the aesthetics in the parent plot object rather than each layer if you prefer.
+(3) Let's add color to show our two treatment groups. Add a `color` argument to `aes()` with `treatment` (our variable of interest) as the value.
+
+```{r}
+# 🅿
+# your code here 
+```
+:::
+
+::: {.callout-tip collapse="true"}
+#### Answer - Scatter plot
+
+```{r}
+#| output: false
+#| label: answer-scatter
+# 1
+pp <- ggplot(polyps)
+pp + geom_point(aes(x=baseline, y=number3m))
+# 2
+pp + geom_point(aes(x=baseline, y=number3m)) +
+  geom_smooth(aes(x=baseline, y=number3m))
+# 3
+ggplot(polyps, aes(x=baseline, y=number3m, color=treatment)) +
+  geom_point() +
+  geom_smooth()
+```
+
+:::
+
+
+::: {.callout-note icon="false"}
+#### Task 2 - Bar chart
+
+(1) Compare the number of subjects in each `polyps` treatment group using a bar chart.
+(2) Change the chart's orientation using the x and y aesthetic mappings.
+
+```{r}
+# 🅿
+# your code here 
+```
+:::
+
+::: {.callout-tip collapse="true"}
+#### Answer - Bar chart
+
+```{r}
+#| output: false
+#| label: answer-bar-chart
+# 1
+ggplot(polyps) + geom_bar(aes(x=treatment))
+# 2
+ggplot(polyps) + geom_bar(aes(y=treatment))
+```
+
+:::
+
+

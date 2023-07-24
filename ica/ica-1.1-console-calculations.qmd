@@ -1,0 +1,59 @@
+---
+title: "ICA 1.1 Console calculations"
+format: 
+  html: 
+    self-contained: true
+    embed-resources: true
+editor: visual
+---
+
+## Task - Arithmetic
+
+1.  Consider the patient weights (in pounds) below.
+2.  Converting pounds to kilograms is given by $\mathrm{weight_{kg}} = \mathrm{weight_{lbs}} \times 0.454$. Supplement the code below to convert the patient weights to kg.
+3.  There are 16 ounces in one pound. What are the patient weights in ounces?
+4.  Consider several freezer temperature readings below. What are their values in Kelvins?
+
+```{r}
+# patient weights in lbs:
+c(264, 356, 155, 280, 175)
+
+# freezer temps in deg. C:
+c(-23.22, -22.90, -23.19, -22.87, -22.94, -23.19)
+
+```
+
+## Task - Use mathematical functions
+
+Consider the age values below. What are the mean, standard deviation, and median of these patients' ages?
+
+```{r}
+# patient age values:
+c(27, 40, 31, 53, 25)
+
+# your code here 
+# suggestion: copy-paste the line of code above to use the values more than once,
+# rather than having to type them
+
+
+```
+
+## Task - Wrap functions
+
+You will frequently need to "wrap" an existing function call with another function. For example, after calculating a mean, you may want to round the result.
+
+1.  Our results initially have too many digits. A quick google search tells you that the function you want for handling significant figures is `signif()`. Run **`?signif`** in the chunk below to open the help article for this function.
+2.  Examining the Usage and Arguments sections, what arguments does `signif()` accept?
+3.  Consider the example using `round()`. Without running the code, how many decimal places do you expect to see?
+4.  Now, add code below to round the mean and SD values to 2 significant digits.
+
+```{r}
+# patient age values:
+c(27, 40, 31, 53, 25)
+
+# an example of a c() call wrapped into a round() function call:
+round(mean(c(1, 99, 100)), 4)
+
+# your code here 
+
+```

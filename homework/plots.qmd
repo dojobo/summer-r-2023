@@ -1,0 +1,62 @@
+---
+title: "HW 3.5 plots"
+format: docx
+editor: visual
+---
+
+## Plot 1
+
+```{r}
+#| echo: false
+#| warning: false
+library(tidyverse)
+library(medicaldata)
+
+laryngoscope %>% 
+  ggplot() +
+  geom_point(aes(x=age, y=ease, color=Randomization)) +
+  labs(x="Age", y="Ease")
+
+```
+
+## Plot 2
+
+```{r}
+#| echo: false
+#| warning: false
+
+polyps %>% 
+  ggplot() +
+  geom_density(aes(x=number12m, color=treatment)) +
+  labs(x="12-month polyp count",
+       y="Density",
+       title="Male subjects had lower 12-month polyp counts.")
+
+```
+
+## Plot 3
+
+```{r}
+#| echo: false
+#| warning: false
+polyps %>% 
+  ggplot() +
+  geom_boxplot(aes(x=number12m, y=treatment, fill=sex)) +
+  labs(y="Treatment group",
+       x="12-month polyp count",
+       fill="Sex")
+```
+
+## Plot 4
+
+```{r}
+#| echo: false
+#| warning: false
+
+polyps %>% 
+  group_by(treatment, sex) %>% 
+  summarize(median_baseline = median(baseline)) %>% 
+  ggplot() +
+  geom_bar(aes(y=treatment, x=median_baseline, fill=sex), stat="identity", position="dodge")
+
+```

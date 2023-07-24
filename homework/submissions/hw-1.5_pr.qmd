@@ -1,0 +1,65 @@
+---
+title: "Homework 1.5"
+format: 
+  html: 
+    self-contained: true
+    embed-resources: true
+editor: visual
+---
+
+## Task - Load a CSV
+
+1.  Attach the readr package using `library()`.
+2.  Load `laryngoscope.csv` from the `data` folder using `read_csv()`. If you get an error, make sure you have quotation marks around the file name, that this homework file is in your session 1 folder, and that `read_csv()` is looking in the `data` folder.
+3.  Assign the result to an object called `laryngoscope`.
+
+```{r}
+library(readr)
+read_csv("laryngoscope-clean.csv")
+laryngoscope <-  laryngoscope_clean
+```
+
+## Task - Get a column's values
+
+The laryngoscope data describe 99 patients who received orotracheal intubation.
+
+1.  Check the data frame's variable names with the `names()` function.
+2.  Use the `$` selector to get the `attempt1_time` variable's values in seconds.
+3.  Calculate the mean of these values, rounded to two decimal places.
+
+```{r}
+names (laryngoscope)
+laryngoscope$attempt1_time
+signif(mean(laryngoscope$attempt1_time),2)
+```
+
+## Task - More arithmetic
+
+\(1\) Consider the heights and weights from a different set of patients below. Let's compare their BMIs to the laryngoscope patients. BMI is given by: $\mathrm{BMI} = \frac{\mathrm{weight}(kg)}{\mathrm{height}(m)^2}$ . Convert `weight_lbs` into kg and assign it to `weight_kg`.
+
+\(2\) Convert and assign `height_in` into `height_m`.
+
+\(3\) Calculate BMI using the metric values, `weight_kg` and `height_m`, using the formula above. Assign to an object named `bmi_2`. ("BMI 1" are the values in `laryngoscope`.)
+
+\(4\) Check the metric BMIs you have calculated, against the formula for BMI with imperial measurements, using `weight_lbs` and `height_in`. $\mathrm{BMI} = 703 \times \frac{\mathrm{weight}(lbs)}{\mathrm{height}(in)^2}$ .
+
+\(5\) Calculate the mean of your BMIs, and compare them to the mean BMI in `laryngoscope`. Does this second group of patients have a higher a lower mean BMI than the laryngoscope patients? (Note: we don't know whether this difference is *significant* or coincidental without further work!)
+
+```{r}
+weight_lbs <- c(127.0, 147.7, 262.2, 248.9, 152.0, 217.7)
+height_in <- c(64.8, 59.0, 66.6, 51.7, 61.1, 54.8)
+
+703 * (c(127.0, 147.7, 262.2, 248.9, 152.0, 217.7) / c(64.8, 59.0, 66.6, 51.7, 61.1, 54.8)) 
+
+```
+
+## Task - Fix this code
+
+Revise the code below to produce a result of 172.4.
+
+(Hint: think about why the current result is returned, and what R data structure `mean()` probably expects as its argument.)
+
+```{r}
+mean( c(203.0, 150.1, 102.8, 241.0, 189.1, 148.3) ) 
+
+```

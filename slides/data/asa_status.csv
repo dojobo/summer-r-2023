@@ -1,0 +1,5 @@
+asa_status_id,asa_status
+1,a normal healthy patient
+2,a patient with mild systemic disease
+3,a patient with severe systemic disease
+4,UNUSED CATEGORY

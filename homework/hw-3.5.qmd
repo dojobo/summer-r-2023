@@ -1,0 +1,85 @@
+---
+title: "Homework 3.5"
+format: 
+  html: 
+    self-contained: true
+    embed-resources: true
+editor: visual
+---
+
+Attach the `tidyverse` and `medicaldata` packages here:
+
+```{r}
+library(tidyverse)
+library(medicaldata)
+```
+
+## Task 1 - Reproduce plots from images
+
+Refer to the accompanying Word file, which contains four plots. Write the code for each plot below.
+
+Plot #1: (note the design error in Randomization being treated as continuous---we will fix this in future)
+
+```{r}
+# your code here 
+```
+
+Plot #2:
+
+```{r}
+
+```
+
+Plot #3:
+
+```{r}
+
+```
+
+Plot #4: (this one is trickier. You'll need to filter, group, and summarize; and use the `position` and `stat` arguments of `geom_bar()`. )
+
+```{r}
+
+```
+
+
+## Task 2 - Fix this code
+
+Fix the code chunks below, which contain some common mistakes when it comes to plotting. It can help to run the code first and read the error message closely. You can also read the code for examples of themes and color scales included with ggplot2.
+
+Chunk #1:
+
+```{r}
+#| eval: false
+covid_testing %>% 
+  filter(result=="positive") %>% 
+  ggplot() +
+  geom_violin(x=demo_group, y=ct_result) +
+  theme_classic()
+  
+```
+
+Chunk #2: (note: intention is for color-coded bars)
+
+```{r}
+#| eval: false
+covid_testing %>%
+  drop_na(payor_group, ct_result) %>% 
+  group_by(demo_group) %>% 
+  summarize(n=n(), mean_verification_time=mean(rec_ver_tat)) %>% 
+  ggplot() +
+  geom_bar(aes(y=demo_group, x=rec_ver_tat, fill=n), stat="identity") +
+  scale_fill_viridis_c() +
+  theme_minimal()
+```
+
+Chunk #3: (error message is less helpful here. What's missing?)
+
+```{r}
+#| eval: false
+covid_testing %>% 
+  geom_bin2d(aes(x=pan_day, y=age)) +
+  labs(x="Day of pandemic") +
+  theme_light()
+```
+
