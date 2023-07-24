@@ -8,7 +8,7 @@ The repository is organized as follows:
 | --- | --- |
 | `homework/`  | Homework assignments (currently there are two), Quarto notebooks   |
 | `ica/`       | In-class assignments, Quarto notebooks                             |
-| `markdown/`  | Markdown versions of materials for easy browsing on GitHub |
+| [`markdown/`](https://github.com/dojobo/summer-r-2023/tree/main/markdown)  | [Markdown versions of materials for easy browsing on GitHub](https://github.com/dojobo/summer-r-2023/tree/main/markdown) |
 | `sessions/`  | Materials collocated according to each session                     |
 | `slides/`    | Presentation slides, written as Quarto notebooks and revealjs html |
 
