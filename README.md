@@ -28,6 +28,10 @@ This course is an introduction to R (specifically the tidyverse) from zero using
 6.  Utilize R documentation to solve problems and explore possibilities
 7.  Gain an understanding of the R packages ecosystem
 
+### Session format
+
+Each 2-hour class session is broken into 2-3 segments. For each segment, the instructor briefly presents information and one or more examples, using the slides. Then students work alone or in small groups on related in-class activities (ICAs), for which solutions are provided to check their own work. The instructor is available during the ICAs to answer questions and help solve technical issues. The instructor may cut short the ICA period as needed in order to reach the next segment. Unfinished ICAs may be further explored individually after class.
+
 ### Schedule and topics studied
 
 | Session  | Topics | Links |
