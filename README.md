@@ -16,6 +16,8 @@ Most example data come from the [{medicaldata}](https://higgi13425.github.io/med
 
 ## Syllabus
 
+This course is an introduction to R (specifically the tidyverse) from zero using medical data examples.
+
 ### Learning goals
 
 1.  Transfer tabular data into and out of R
