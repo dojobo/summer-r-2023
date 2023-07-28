@@ -9,6 +9,7 @@ format:
     logo: "images/ULS_logo1.png"
     execute:
       echo: true
+  gfm: default
 editor: visual
 ---
 
@@ -132,7 +133,7 @@ ggplot(laryngoscope) +
   geom_freqpoly(aes(x=age), binwidth=3)
 ```
 
-## Density plots: `geom_density()`  {.smaller}
+## Density plots: `geom_density()` {.smaller}
 
 -   Smoothed version of a histogram
 -   Note: y axis is not count of observations but a computed density estimate
@@ -242,7 +243,7 @@ covid_testing %>%
 
 # ICA 3.2: Multivariate plots
 
-## Rendering notebooks  {.smaller}
+## Rendering notebooks {.smaller}
 
 -   Besides sending a notebook to a colleague, you can also **Render** your notebook into a variety of formats, e.g., html, word docx, pdf, etc.
 -   In the header of your notebook, take note of the `format:` heading

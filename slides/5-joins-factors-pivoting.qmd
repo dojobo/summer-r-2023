@@ -9,6 +9,7 @@ format:
     logo: "images/ULS_logo1.png"
     execute:
       echo: true
+  gfm: default
 editor: visual
 ---
 
@@ -279,7 +280,7 @@ my_fct %>% fct_infreq()
 #| echo: false
 #| output: false
 
-births <- read_csv("../data/NCHS_-_U.S._and_State_Trends_on_Teen_Births.csv")
+births <- read_csv("data/NCHS_-_U.S._and_State_Trends_on_Teen_Births.csv")
 teen_births <- births %>% 
   filter(Year > 2012) %>% 
   group_by(State, Year) %>% 

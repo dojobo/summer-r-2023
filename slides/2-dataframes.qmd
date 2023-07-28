@@ -7,6 +7,7 @@ format:
     self-contained: true
     footer: "Summer R 2: Data frames"
     logo: "images/ULS_logo1.png"
+  gfm: default
 editor: visual
 ---
 
